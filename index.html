@@ -1,122 +1,181 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Motivasi Kehidupan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ketenangan atau Teror</title>
 <style>
-body, html {
-  margin: 0; padding: 0;
-  width: 100%; height: 100%;
-  background: #000;
-  overflow: hidden;
-  font-family: 'Poppins', sans-serif;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-.awan {
-  position: fixed;
-  width: 200%;
-  height: 100%;
-  background: url('https://i.ibb.co/1qbcPqM/cloud.png') repeat-x;
-  animation: awan 60s linear infinite;
-  opacity: 0.1;
-  z-index: 1;
-}
-@keyframes awan {
-  from {transform: translateX(0);}
-  to {transform: translateX(-50%);}
-}
-.typing {
-  overflow: hidden;
-  font-size: 22px;
-  width: 100%;
-  max-width: 600px;
-  text-align: center;
-  z-index: 2;
-  position: relative;
-}
-#startBtn {
-  margin-top: 30px;
-  padding: 15px 30px;
-  font-size: 20px;
-  background: orange;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: 0.3s;
-  z-index: 3;
-  position: relative;
-}
-#startBtn:hover {
-  background: darkorange;
-}
-.rating {
-  display: none;
-  flex-direction: row;
-  gap: 10px;
-  margin-top: 20px;
-  z-index: 3;
-}
-.rating span {
-  font-size: 40px;
-  cursor: pointer;
-}
+  body, html {
+    margin: 0;
+    padding: 0;
+    background: black;
+    color: white;
+    font-family: monospace;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+  }
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    flex-direction: column;
+  }
+  .typing {
+    white-space: pre-line;
+    overflow: hidden;
+    border-right: .15em solid white;
+    animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+  }
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: white }
+  }
+  button {
+    margin-top: 30px;
+    padding: 15px 30px;
+    background: red;
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1) }
+    50% { transform: scale(1.1) }
+    100% { transform: scale(1) }
+  }
+  .popup, .video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.9);
+    color: white;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 </style>
 </head>
-<body>
-<div class="awan"></div>
-<div class="typing" id="motivasi"></div>
-<button id="startBtn" onclick="startVideo()" style="display:none;">Lanjutkan Perjalanan</button><video id="video" style="display:none; width:100%; height:100%; object-fit:cover;" autoplay muted></video>
 
-<div class="rating" id="rating">
-  <span onclick="rate(1)">&#11088;</span>
-  <span onclick="rate(2)">&#11088;</span>
-  <span onclick="rate(3)">&#11088;</span>
-  <span onclick="rate(4)">&#11088;</span>
-  <span onclick="rate(5)">&#11088;</span>
-</div><script>
-let kata = "Kadang dalam hidup ini kita terlalu sibuk mengejar sesuatu... Sampai lupa caranya menikmati perjalanan... Tidak semua harus sempurna, tidak semua harus cepat, yang penting kamu terus berjalan.";
+<body>
+
+<div class="center" id="start">
+  <div id="text" class="typing"></div>
+  <button onclick="playVideo()">LANJUTKAN</button>
+</div>
+
+<div class="video-container" id="videoContainer">
+  <video id="video1" src="https://files.catbox.moe/xs4fjk.mp4" autoplay muted playsinline></video>
+</div>
+
+<div class="popup" id="popup">
+  <h1>MAU JADI RIPPER ATAU AMANAH?</h1>
+  <button onclick="choose('ripper')">RIPPER</button>
+  <button onclick="choose('amanah')">AMANAH</button>
+</div>
+
+<div class="popup" id="pesanAmanah">
+  <h1>TETAP AMANAH YA BRO, KARNA AMANAH ITU MAHAL</h1>
+</div>
+
+<script>
+let text = "JANGAN PERNAH TAKUT GAGAL!\nYANG PENTING JANGAN NYERAH!\nAKUN BOLEH JEBOL, SEMANGAT JANGAN TURUN!";
 let i = 0;
+
 function ketik() {
-  if(i < kata.length){
-    document.getElementById("motivasi").innerHTML += kata.charAt(i);
+  if (i < text.length) {
+    document.getElementById("text").innerHTML += text.charAt(i);
     i++;
-    setTimeout(ketik, 50);
-  } else {
-    document.getElementById("startBtn").style.display = 'block';
+    setTimeout(ketik, 60);
   }
 }
-
 ketik();
 
-function startVideo(){
-  document.getElementById("motivasi").style.display = 'none';
-  document.getElementById("startBtn").style.display = 'none';
-  let video = document.getElementById("video");
-  video.style.display = 'block';
-  video.src = "https://files.catbox.moe/xs4fjk.mp4";
-  video.muted = false;
-  video.play();
+function playVideo() {
+  document.getElementById('start').style.display = 'none';
+  let videoContainer = document.getElementById('videoContainer');
+  let video1 = document.getElementById('video1');
+  videoContainer.style.display = 'flex';
+  video1.muted = false;
+  video1.volume = 1;
+  video1.play();
+
+  // Memasukkan video ke dalam mode layar penuh
+  if (video1.requestFullscreen) {
+    video1.requestFullscreen();
+  } else if (video1.mozRequestFullScreen) { /* Firefox */
+    video1.mozRequestFullScreen();
+  } else if (video1.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+    video1.webkitRequestFullscreen();
+  } else if (video1.msRequestFullscreen) { /* IE/Edge */
+    video1.msRequestFullscreen();
+  }
 
   setTimeout(()=>{
-    document.getElementById("rating").style.display = 'flex';
-  },3000);
+    document.getElementById('popup').style.display = 'flex';
+    video1.pause();
+  }, 3000);
 }
 
-function rate(bintang){
-  let video = document.getElementById("video");
-  document.getElementById("rating").style.display = 'none';
+function choose(pilihan){
+  document.getElementById('popup').style.display = 'none';
+  
+  if(pilihan == 'ripper'){
+    let videoContainer = document.getElementById('videoContainer');
+    videoContainer.innerHTML = '<video id="video2" src="https://files.catbox.moe/t85mx0.mp4" autoplay loop muted playsinline></video>';
+    let video2 = document.getElementById('video2');
+    video2.muted = false;
+    video2.volume = 1;
+    video2.play();
 
-  if(bintang <= 3){
-    video.src = "https://files.catbox.moe/81xesu.mp4";
-    video.play();
-  } else {
-    video.play();
+    // Memasukkan video ke dalam mode layar penuh
+    if (video2.requestFullscreen) {
+      video2.requestFullscreen();
+    } else if (video2.mozRequestFullScreen) { /* Firefox */
+      video2.mozRequestFullScreen();
+    } else if (video2.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+      video2.webkitRequestFullscreen();
+    } else if (video2.msRequestFullscreen) { /* IE/Edge */
+      video2.msRequestFullscreen();
+    }
+  }else{
+    document.getElementById('pesanAmanah').style.display = 'flex';
+    setTimeout(()=>{
+      document.getElementById('pesanAmanah').style.display = 'none';
+      let video1 = document.getElementById('video1');
+      video1.play();
+
+      // Memasukkan video ke dalam mode layar penuh
+      if (video1.requestFullscreen) {
+        video1.requestFullscreen();
+      } else if (video1.mozRequestFullScreen) { /* Firefox */
+        video1.mozRequestFullScreen();
+      } else if (video1.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        video1.webkitRequestFullscreen();
+      } else if (video1.msRequestFullscreen) { /* IE/Edge */
+        video1.msRequestFullscreen();
+      }
+    }, 3000);
   }
 }
-</script></body>
+</script>
+
+</body>
 </html>
